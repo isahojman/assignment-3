@@ -1,0 +1,86 @@
+---
+title: "Assignment 3"
+author: "Isabel Hojman"
+date: "15/11/2017"
+output: html_document
+---
+
+# Exercise 1
+
+```{r}
+`%>%` <- magrittr::`%>%`
+#library(dplyr)
+```
+
+## Task A
+
+```{r}
+#print(stressshift::stress_shift_unamb)
+stress_shift_3dict <- dplyr::filter(stressshift::stress_shift_unamb, Dict %in% c("W1802", "J1917", "C1687")) 
+print(stress_shift_3dict)
+print(dim(stress_shift_3dict))
+```
+
+
+## Task B
+
+```{r}
+stress_shift_3dict_using_pipe <- stressshift::stress_shift_unamb %>% dplyr::filter(Dict %in% c("W1802", "J1917", "C1687"))
+identical(stress_shift_3dict, stress_shift_3dict_using_pipe)
+```
+
+## Task C
+
+```{r}
+stress_shift_3dict_nouns <- stress_shift_3dict %>% dplyr::filter(Category == "Noun")
+#print(stress_shift_3dict_nouns)
+stress_shift_3dict_verbs <- stress_shift_3dict %>% dplyr::filter(Category == "Verb")
+#print(stress_shift_3dict_verbs)
+stress_shift_3dict_using_bind <- dplyr::bind_rows(stress_shift_3dict_nouns, stress_shift_3dict_verbs)
+#print(stress_shift_3dict_using_bind)
+stress_shift_3dict_using_bind_reversed <- dplyr::bind_rows(stress_shift_3dict_verbs, stress_shift_3dict_nouns)
+#print(stress_shift_3dict_using_bind_reversed)
+identical(stress_shift_3dict, stress_shift_3dict_using_bind)
+identical(stress_shift_3dict, stress_shift_3dict_using_bind_reversed)
+```
+
+
+## Task D
+
+```{r}
+stress_shift_nouns_renamed <- stressshift::stress_shift_unamb %>% 
+  dplyr::filter(Category == "Noun") %>%
+  dplyr::select(Word, Dict, Syllable) %>%
+  dplyr::rename(Syllable_Noun = Syllable)
+#print(stress_shift_nouns_renamed)
+
+stress_shift_verbs_renamed <- stressshift::stress_shift_unamb %>% 
+  dplyr::filter(Category == "Verb") %>%
+  dplyr::select(Word, Dict, Syllable) %>%
+  dplyr::rename(Syllable_Verb = Syllable)
+#print(stress_shift_verbs_renamed)
+
+stress_shift_wide <- dplyr::inner_join(stress_shift_nouns_renamed, stress_shift_verbs_renamed)
+print(stress_shift_wide)
+```
+
+inner_join(x, y) "return all rows from x where there are matching values in y, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned." Therefore, it only returns the rows that are shared by both tables.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
