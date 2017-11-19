@@ -5,6 +5,10 @@ date: "15/11/2017"
 output: html_document
 ---
 
+```{r}
+source("Functions.R")
+```
+
 # Exercise 1
 
 ```{r}
@@ -121,6 +125,19 @@ print(dim(stress_shift_byword_all))
 ```
 
 
+# Excercise 2
+
+## Task A
+
+Insert a chunk that uses this function to calculate the observed value of the test statistic. If you use "Syllable 1" as the target value, with nouns as group 1 and verbs as group 2, the result should be `0.6839201`.
+
+```{r}
+dif <- difference_in_proportion(stressshift::stress_shift_unamb, "Syllable", "Category", "Noun", "Verb", "Syllable 1")
+print(dif)
+```
+
+
+## Task B
 
 
 
