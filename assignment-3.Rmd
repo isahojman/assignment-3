@@ -64,7 +64,49 @@ stress_shift_wide <- dplyr::inner_join(stress_shift_nouns_renamed, stress_shift_
 print(stress_shift_wide)
 ```
 
-inner_join(x, y) "return all rows from x where there are matching values in y, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned." Therefore, it only returns the rows that are shared by both tables.
+inner_join(x, y) "return all rows from x where there are matching values in y, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned." Therefore, it only returns the rows that are shared by both tables. That's the reason why it has fewer rows than the original tables.
+
+## Task E
+
+```{r}
+ggplot2::ggplot(stressshift::stress_shift_unamb, ggplot2::aes(x=Category, fill=Syllable)) +
+ggplot2::geom_bar(position="dodge", colour="black") + ggplot2::scale_fill_brewer(palette="Set3")
+```
+
+## Task F
+
+
+```{r}
+stress_shift_byword <- stress_shift_wide %>%
+  dplyr::group_by(Word) %>%
+  dplyr::summarise(Noun_Percent_Syll_1 = (sum(Syllable_Noun =="Syllable 1"))/n(),
+                   Verb_Percent_Syll_1 = (sum(Syllable_Verb =="Syllable 1"))/n())
+#print(stress_shift_byword)
+print(dim(stress_shift_byword))
+```
+
+
+## Task G
+
+```{r}
+ggplot2::ggplot(stress_shift_byword, ggplot2::aes(x=Noun_Percent_Syll_1, y=Verb_Percent_Syll_1)) + ggplot2::geom_point()
+```
+
+
+## Task H
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
 
 
 
