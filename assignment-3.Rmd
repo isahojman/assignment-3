@@ -139,10 +139,30 @@ print(dif)
 
 ## Task B
 
+```{r}
+if(!exists(".Random.seed")) set.seed(NULL)
+previous_seed <- .Random.seed
+set.seed(1)
+ptest_stress <- permutation_twogroups(stressshift::stress_shift_unamb,
+                      "Syllable", "Category", "Noun", "Verb",
+                      difference_in_proportion,
+                      n_samples=99,
+                      "Syllable 1")
+set.seed(previous_seed)
+permutation_pvalue_right(ptest_stress)
+```
 
+Make a histogram of the resulting test statistics with a vertical line indicating the value of the observed test statistic. Use a bin width of 0.005 so that you can see something in the histogram (otherwise it's not going to have many bars).
 
+```{r}
+ptest_st <- tibble::as_tibble(ptest_stress["permuted"])
+p <- ggplot2::ggplot(ptest_st, ggplot2::aes_string(x="permuted")) +
+  ggplot2::geom_histogram(colour="black", fill="firebrick", binwidth=0.005) +
+  ggplot2::geom_vline(ggplot2::aes(xintercept=ptest_stress[["observed"]]), color="firebrick") +
+  ggplot2::ggtitle("Permutation Noun-Verb Syllable 1")
 
-
+print(p)
+```
 
 
 
