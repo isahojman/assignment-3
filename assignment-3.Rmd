@@ -97,7 +97,27 @@ ggplot2::ggplot(stress_shift_byword, ggplot2::aes(x=Noun_Percent_Syll_1, y=Verb_
 
 
 ```{r}
+stress_shift_nouns_renamed <- stressshift::stress_shift_unamb %>% 
+  dplyr::filter(Category == "Noun") %>%
+  dplyr::select(Word, Dict, Syllable) %>%
+  dplyr::rename(Syllable_Noun = Syllable)
+#print(stress_shift_nouns_renamed)
 
+stress_shift_verbs_renamed <- stressshift::stress_shift_unamb %>% 
+  dplyr::filter(Category == "Verb") %>%
+  dplyr::select(Word, Dict, Syllable) %>%
+  dplyr::rename(Syllable_Verb = Syllable)
+#print(stress_shift_verbs_renamed)
+
+stress_shift_wide_all <- dplyr::left_join(stress_shift_nouns_renamed, stress_shift_verbs_renamed)
+#print(dim(stress_shift_wide_all)) 
+
+stress_shift_byword_all <- stress_shift_wide_all %>%
+  dplyr::group_by(Word) %>%
+  dplyr::summarise(Noun_Percent_Syll_1 = (sum(Syllable_Noun =="Syllable 1"))/n(),
+                   Verb_Percent_Syll_1 = (sum(Syllable_Verb =="Syllable 1"))/n())
+print(stress_shift_byword_all)
+print(dim(stress_shift_byword_all))
 ```
 
 
