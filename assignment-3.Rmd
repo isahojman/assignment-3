@@ -164,7 +164,67 @@ p <- ggplot2::ggplot(ptest_st, ggplot2::aes_string(x="permuted")) +
 print(p)
 ```
 
+# Exercice 3
 
+
+## Task A
+
+
+
+```{r}
+S1_Noun_prop <- stressshift::stress_shift_unamb %>% 
+  dplyr::filter(Category == "Noun") %>% 
+  dplyr::summarise(size=sum(n()), prop=length(which(Syllable =="Syllable 1"))/(n()))
+
+S1_Verb_prop <- stressshift::stress_shift_unamb %>% 
+  dplyr::filter(Category == "Verb") %>% 
+  dplyr::summarise(size=sum(n()), prop=length(which(Syllable =="Syllable 1"))/(n()))
+
+print(S1_Noun_prop)
+print(S1_Verb_prop)
+```
+
+Add columns `Noun_Percent_Syll_1` and `Verb_Percent_Syll_1` with the appropriate relative frequencies for each replication. And add a column `Replication` containing `"R0001"`, `"R0002"`, ...,  as unique identifiers for each replication, which you can generate using the following code:
+
+```{r}
+Noun_N_Syll_1 <- rbinom(1000, S1_Noun_prop[["size"]], S1_Noun_prop[["prop"]])
+Verb_N_Syll_1 <- rbinom(1000, S1_Verb_prop[["size"]], S1_Verb_prop[["prop"]])
+stress_shift_replications <- tibble::data_frame(Noun_N_Syll_1=Noun_N_Syll_1, Verb_N_Syll_1=Verb_N_Syll_1)
+#print(stress_shift_replications)
+Replication <- paste0("R", sprintf("%04d", 1:1000))
+#print(Replication)
+stress_shift_replications <- tibble::add_column(stress_shift_replications, Replication = Replication)
+print(stress_shift_replications)
+
+```
+
+
+
+Finally, add a column called `Difference_in_Proportion` giving the value of the test statistic from before. You don't need to try to use your existing function. (That would be hard and pointless.) You just need to calculate the difference in the two proportions, noun minus verb.
+
+Make a histogram for this new distribution of test statistics, again with a vertical line at the observed value in the original data, plotting again with a bin width of 0.005—but change the $x$ limits of the graph by adding the following to the plot object:
+
+```
+ggplot2::xlim(c(-0.1, 0.8))
+```
+
+Now re-plot your test statistic distribution obtained using the permutation test, immediately below this new plot, with the same $x$ limits.
+
+Explain what these two histograms are showing. Relate the location of the vertical line to the result on page 57 of the Good textbook about the expected value of a binomial distribution.
+
+
+## Task B
+
+
+
+
+## Task C
+
+
+
+
+
+# Exercice 4
 
 
 
