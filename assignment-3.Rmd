@@ -184,13 +184,20 @@ print(S1_Noun_prop)
 print(S1_Verb_prop)
 ```
 
-Add columns `Noun_Percent_Syll_1` and `Verb_Percent_Syll_1` with the appropriate relative frequencies for each replication. And add a column `Replication` containing `"R0001"`, `"R0002"`, ...,  as unique identifiers for each replication, which you can generate using the following code:
+
 
 ```{r}
 Noun_N_Syll_1 <- rbinom(1000, S1_Noun_prop[["size"]], S1_Noun_prop[["prop"]])
 Verb_N_Syll_1 <- rbinom(1000, S1_Verb_prop[["size"]], S1_Verb_prop[["prop"]])
 stress_shift_replications <- tibble::data_frame(Noun_N_Syll_1=Noun_N_Syll_1, Verb_N_Syll_1=Verb_N_Syll_1)
 #print(stress_shift_replications)
+
+Noun_Percent_Syll_1 <- Noun_N_Syll_1/S1_Noun_prop[["size"]]
+Verb_Percent_Syll_1 <- Verb_N_Syll_1/S1_Verb_prop[["size"]]
+#print(Noun_Percent_Syll_1)
+stress_shift_replications <- tibble::add_column(stress_shift_replications, Noun_Percent_Syll_1 = Noun_Percent_Syll_1,
+                                                Verb_Percent_Syll_1 = Verb_Percent_Syll_1)
+
 Replication <- paste0("R", sprintf("%04d", 1:1000))
 #print(Replication)
 stress_shift_replications <- tibble::add_column(stress_shift_replications, Replication = Replication)
@@ -200,15 +207,39 @@ print(stress_shift_replications)
 
 
 
-Finally, add a column called `Difference_in_Proportion` giving the value of the test statistic from before. You don't need to try to use your existing function. (That would be hard and pointless.) You just need to calculate the difference in the two proportions, noun minus verb.
-
-Make a histogram for this new distribution of test statistics, again with a vertical line at the observed value in the original data, plotting again with a bin width of 0.005—but change the $x$ limits of the graph by adding the following to the plot object:
-
-```
-ggplot2::xlim(c(-0.1, 0.8))
+```{r}
+Difference_in_Proportion <- Noun_Percent_Syll_1 - Verb_Percent_Syll_1
+stress_shift_replications <- tibble::add_column(stress_shift_replications, Difference_in_Proportion = Difference_in_Proportion)
+print(stress_shift_replications)
 ```
 
-Now re-plot your test statistic distribution obtained using the permutation test, immediately below this new plot, with the same $x$ limits.
+
+
+
+```{r}
+p1 <- ggplot2::ggplot(stress_shift_replications, ggplot2::aes_string(x="Difference_in_Proportion")) +
+  ggplot2::geom_histogram(colour="black", fill="firebrick", binwidth=0.005) +
+  ggplot2::geom_vline(ggplot2::aes(xintercept=ptest_stress[["observed"]]), color="firebrick") +
+  ggplot2::xlim(c(-0.1, 0.8)) +
+  ggplot2::ggtitle("Difference in proportion")
+
+print(p1)
+```
+
+
+```{r}
+
+p2 <- ggplot2::ggplot(ptest_st, ggplot2::aes_string(x="permuted")) +
+  ggplot2::geom_histogram(colour="black", fill="firebrick", binwidth=0.005) +
+  ggplot2::geom_vline(ggplot2::aes(xintercept=ptest_stress[["observed"]]), color="firebrick") +
+  ggplot2::xlim(c(-0.1, 0.8)) +
+  ggplot2::ggtitle("Permuted")
+
+print(p2)
+```
+
+
+
 
 Explain what these two histograms are showing. Relate the location of the vertical line to the result on page 57 of the Good textbook about the expected value of a binomial distribution.
 
