@@ -246,7 +246,7 @@ Explain what these two histograms are showing. Relate the location of the vertic
 
 ## Task B
 
-
+Note : Je n'arrive pas à le faire fonctionner.
 ```{r cache=TRUE}
 stress_shift_replications <- stress_shift_replications %>%
   dplyr::mutate(
@@ -326,12 +326,28 @@ stress_shift_replications_c6 <- stress_shift_replications %>%
 
 
 
-
-
-
 # Exercice 4
 
 
+```{r}
+pearson_nouns <- permutation_test(stress_shift_nouns_renamed,
+                      "Syllable_Noun",
+                      pearson_x2_stat,
+                      n_samples=99,
+                      "Syllable_Noun",
+                      "Word")
+print(pearson_nouns)
+```
+
+```{r}
+pearson_verbs <- permutation_test(stress_shift_verbs_renamed,
+                      "Syllable_Verb",
+                      pearson_x2_stat,
+                      n_samples=99,
+                      "Syllable_Verb",
+                      "Word")
+print(pearson_verbs)
+```
 
 
 
