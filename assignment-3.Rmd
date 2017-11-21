@@ -247,9 +247,83 @@ Explain what these two histograms are showing. Relate the location of the vertic
 ## Task B
 
 
+```{r cache=TRUE}
+stress_shift_replications <- stress_shift_replications %>%
+  dplyr::mutate(
+    Permutation_Pvalue=v_pdp_pvalue_right(Noun_N_Syll_1, Verb_N_Syll_1,
+                                          6506,6732,
+                                          n_samples=99))
+```
 
 
 ## Task C
+
+
+
+```{r  cache=TRUE}
+Noun_N_Syll1 <- rbinom(1000,651,stress_shift_binom[["prop"]][1])
+Verb_N_Syll1 <- rbinom(1000,673,stress_shift_binom[["prop"]][2])
+stress_shift_replications_c1 <- stress_shift_replications %>%
+  dplyr::mutate(
+    Permutation_Pvalue=v_pdp_pvalue_right(Noun_N_Syll1, Verb_N_Syll1,
+                                          651,673,
+                                          n_samples=99))
+```
+
+```{r cache=TRUE}
+Noun_N_Syll2 <- rbinom(1000,12034,stress_shift_binom[["prop"]][1])
+Verb_N_Syll2 <- rbinom(1000,1204,stress_shift_binom[["prop"]][2])
+stress_shift_replications_c2 <- stress_shift_replications %>%
+  dplyr::mutate(
+    Permutation_Pvalue=v_pdp_pvalue_right(Noun_N_Syll2, Verb_N_Syll2,
+                                          12034,1204,
+                                          n_samples=99))
+
+```
+
+```{r}
+Noun_N_Syll3 <- rbinom(1000,16,stress_shift_binom[["prop"]][1])
+Verb_N_Syll3 <- rbinom(1000,17,stress_shift_binom[["prop"]][2])
+stress_shift_replications_c3 <- stress_shift_replications %>%
+  dplyr::mutate(
+    Permutation_Pvalue=v_pdp_pvalue_right(Noun_N_Syll3, Verb_N_Syll3,
+                                          16,17,
+                                          n_samples=99))
+
+```
+
+```{r}
+Noun_N_Syll4 <- rbinom(1000,30,stress_shift_binom[["prop"]][1])
+Verb_N_Syll4 <- rbinom(1000,3,stress_shift_binom[["prop"]][2])
+stress_shift_replications_c4 <- stress_shift_replications %>%
+  dplyr::mutate(
+    Permutation_Pvalue=v_pdp_pvalue_right(Noun_N_Syll4, Verb_N_Syll4,
+                                          30,3,
+                                          n_samples=99))
+
+```
+
+```{r}
+Noun_N_Syll5 <- rbinom(1000,30,0.52)
+Verb_N_Syll5 <- rbinom(1000,3,0.48)
+stress_shift_replications_c5 <- stress_shift_replications %>%
+  dplyr::mutate(
+    Permutation_Pvalue=v_pdp_pvalue_right(Noun_N_Syll5, Verb_N_Syll5,
+                                          30,3,
+                                          n_samples=99))
+```
+
+
+```{r}
+Noun_N_Syll6 <- rbinom(1000,6506,0.52)
+Verb_N_Syll6 <- rbinom(1000,6732,0.48)
+stress_shift_replications_c6 <- stress_shift_replications %>%
+  dplyr::mutate(
+    Permutation_Pvalue=v_pdp_pvalue_right(Noun_N_Syll6, Verb_N_Syll6,
+                                          651,673,
+                                          n_samples=99))
+```
+
 
 
 
